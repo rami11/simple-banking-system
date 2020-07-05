@@ -19,8 +19,12 @@ public class LoginMenuHandler {
             switch (choice) {
 
                 case 0:
-                    System.out.printf("%nBye!%n");
+                    System.out.printf("%nBye!%n%n");
                     System.exit(0);
+                    break;
+
+                case 1:
+                    System.out.printf("%nBalance: 0%n%n");
                     break;
 
                 case 2:
