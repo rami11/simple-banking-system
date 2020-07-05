@@ -30,9 +30,9 @@ public class BankCard {
         char[] chars = cardNumber.toCharArray();
 
         int sum = 0;
-        for (int i = 0; i < chars.length; i++) {
-            int num = Character.getNumericValue(chars[i]);
-            if (i + 1 % 2 == 1) {
+        for (int i = 1; i <= chars.length; i++) {
+            int num = Character.getNumericValue(chars[i - 1]);
+            if (i % 2 == 1) {
                 num *= 2;
             }
             if (num > 9) {
