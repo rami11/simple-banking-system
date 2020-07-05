@@ -16,11 +16,31 @@ public class BankCard {
         StringBuilder cardNumberBuilder = new StringBuilder();
         String iin = "400000";
         cardNumberBuilder.append(iin);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             int next = random.nextInt(10);
             cardNumberBuilder.append(next);
         }
+        int checksum = findChecksum(cardNumberBuilder.toString());
+        cardNumberBuilder.append(checksum);
+
         return cardNumberBuilder.toString();
+    }
+
+    private int findChecksum(String cardNumber) {
+        char[] chars = cardNumber.toCharArray();
+
+        int sum = 0;
+        for (int i = 0; i < chars.length; i++) {
+            int num = Character.getNumericValue(chars[i]);
+            if (i + 1 % 2 == 1) {
+                num *= 2;
+            }
+            if (num > 9) {
+                num -= 9;
+            }
+            sum += num;
+        }
+        return sum % 10 == 0 ? 0 : 10 - sum % 10;
     }
 
     private String generatePIN() {
