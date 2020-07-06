@@ -40,7 +40,7 @@ public class BankCard {
             }
             sum += num;
         }
-        return sum % 10 == 0 ? 0 : 10 - sum % 10;
+        return (10 - sum % 10) % 10;
     }
 
     private String generatePIN() {
