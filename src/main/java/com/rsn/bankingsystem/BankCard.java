@@ -1,14 +1,23 @@
 package com.rsn.bankingsystem;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class BankCard {
     private final String cardNumber;
     private final String pin;
+    private double balance;
+
+    public BankCard(String cardNumber, String pin) {
+        this.cardNumber = cardNumber;
+        this.pin = pin;
+        this.balance = 0;
+    }
 
     public BankCard() {
         this.cardNumber = generateCardNumber();
         this.pin = generatePIN();
+        this.balance = 0;
     }
 
     private String generateCardNumber() {
@@ -58,5 +67,27 @@ public class BankCard {
 
     public String getPin() {
         return pin;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BankCard bankCard = (BankCard) o;
+        return Objects.equals(cardNumber, bankCard.cardNumber) &&
+                Objects.equals(pin, bankCard.pin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardNumber, pin);
     }
 }

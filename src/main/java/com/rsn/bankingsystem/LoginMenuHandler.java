@@ -1,7 +1,5 @@
 package com.rsn.bankingsystem;
 
-import java.util.InputMismatchException;
-
 public class LoginMenuHandler {
     private final AppState state;
 
@@ -11,30 +9,24 @@ public class LoginMenuHandler {
 
     public void start() {
         printLogInMenu();
-        try {
-            int choice = state.getScanner().nextInt();
-            if (choice < 0 || choice > 2) {
-                throw new InputMismatchException();
-            }
-            switch (choice) {
+        int option = state.readOption();
+        switch (option) {
+            case 0:
+                System.out.printf("%nBye!%n%n");
+                System.exit(0);
+                break;
 
-                case 0:
-                    System.out.printf("%nBye!%n%n");
-                    System.exit(0);
-                    break;
+            case 1:
+                System.out.printf("%nBalance: 0%n%n");
+                break;
 
-                case 1:
-                    System.out.printf("%nBalance: 0%n%n");
-                    break;
-
-                case 2:
-                    state.setLoggedIn(false);
-                    System.out.printf("%nYou have successfully logged out!%n%n");
-                    break;
-            }
-
-        } catch (InputMismatchException ex) {
-            System.err.printf("Please, choose an option in range 0-2%n%n");
+            case 2:
+                state.logout();
+                System.out.printf("%nYou have successfully logged out!%n%n");
+                break;
+            default:
+                System.err.printf("%nPlease, choose an option in range 0-2%n%n");
+                break;
         }
     }
 

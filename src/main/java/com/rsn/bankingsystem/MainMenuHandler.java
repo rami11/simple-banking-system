@@ -1,7 +1,5 @@
 package com.rsn.bankingsystem;
 
-import java.util.InputMismatchException;
-
 public class MainMenuHandler {
     private final AppState state;
 
@@ -22,51 +20,43 @@ public class MainMenuHandler {
         System.out.println("Your card PIN:");
         System.out.printf("%s%n%n", pin);
 
-        state.getCardNumberToPinMap().put(cardNumber, pin);
+        state.addCard(bankCard);
     }
 
     private void logIntoAccount() {
         System.out.println();
 
         System.out.println("Enter your card number:");
-        String cardNumber = state.getScanner().next();
+        String cardNumber = state.readNext();
 
         System.out.println("Enter your PIN:");
-        String pin = state.getScanner().next();
+        String pin = state.readNext();
 
-        if (checkLogin(cardNumber, pin)) {
-            state.setLoggedIn(true);
+        if (state.tryLogin(cardNumber, pin)) {
             System.out.println("\nYou have successfully logged in!");
         } else {
             System.out.println("\nWrong card number or PIN!");
         }
-
         System.out.println();
     }
 
     public void start() {
         printMainMenu();
-        try {
-            int choice = state.getScanner().nextInt();
-            if (choice < 0 || choice > 2) {
-                throw new InputMismatchException();
-            }
-
-            switch (choice) {
-                case 0:
-                    System.out.printf("%nBye!%n");
-                    System.exit(0);
-                    break;
-                case 1:
-                    createAccount();
-                    break;
-                case 2:
-                    logIntoAccount();
-                    break;
-            }
-
-        } catch (InputMismatchException ex) {
-            System.err.printf("Please, choose an option in range 0-2%n%n");
+        int option = state.readOption();
+        switch (option) {
+            case 0:
+                System.out.printf("%nBye!%n");
+                System.exit(0);
+                break;
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                logIntoAccount();
+                break;
+            default:
+                System.err.printf("%nPlease, choose an option in range 0-2%n%n");
+                break;
         }
     }
 
@@ -74,9 +64,5 @@ public class MainMenuHandler {
         System.out.println("1. Create an account");
         System.out.println("2. Log into account");
         System.out.println("0. Exit");
-    }
-
-    private boolean checkLogin(String cardNumber, String pin) {
-        return pin.equals(state.getCardNumberToPinMap().get(cardNumber));
     }
 }
