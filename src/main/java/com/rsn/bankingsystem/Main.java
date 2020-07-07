@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) {
         Map<String, String> paramToValue = readArgs(args);
 
-        DBConnection dbConnection = new DBConnection(paramToValue.get("fileName"));
+        String dbName = paramToValue.get("fileName");
+        DBConnection dbConnection = new DBConnection(dbName == null ? "banking_system.db" : dbName);
 
         AppState state = new AppState(dbConnection);
         MainMenuHandler mainMenuHandler = new MainMenuHandler(state);
