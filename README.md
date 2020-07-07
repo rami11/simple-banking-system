@@ -6,8 +6,8 @@ Everything goes digital these days, and so does money. Today, most people have c
 ### How it works
 Just add a database file name of your choice as an argument before you run the program.
 
-You can set these attributes in intelliJ
-Main class:       ```com.rsn.bankingsystem.Main```
-Program argument: ```-fileName <db_name.db>```
+You can set these attributes in intelliJ\
+Main class:       `com.rsn.bankingsystem.Main`
+Program argument: `-fileName <db_name.db>`
 
-or run the command ```java com.rsn.bankingsystem.Main -fileName <db_name.db>```
+or run the command `java com.rsn.bankingsystem.Main -fileName <db_name.db>`
