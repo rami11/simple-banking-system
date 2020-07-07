@@ -6,16 +6,16 @@ import java.util.Scanner;
 
 public class AppState {
     private final Scanner scanner;
-    private final BankCardDAO cardDao;
+    private final BankCardDAO cardDAO;
     private BankCard loggedInCard;
 
     public AppState(DBConnection dbConnection) {
-        this.cardDao = new BankCardDAO(dbConnection);
+        this.cardDAO = new BankCardDAO(dbConnection);
         this.scanner = new Scanner(System.in);
     }
 
     public boolean tryLogin(String cardNumber, String pin) throws SQLException {
-        BankCard card = this.cardDao.getCard(cardNumber, pin);
+        BankCard card = this.cardDAO.getCard(cardNumber, pin);
         if (card != null) {
             loggedInCard = card;
             return true;
@@ -23,13 +23,20 @@ public class AppState {
         return false;
     }
 
+    public String getLoggedInCardNumber() {
+        return loggedInCard.getCardNumber();
+    }
+
     public void addIncome(int income) throws SQLException {
-        int id = loggedInCard.getId();
-        this.cardDao.addIncome(id, income);
+        cardDAO.addIncome(loggedInCard.getId(), income);
+    }
+
+    public void transferIncome(int toId, int income) throws SQLException {
+        cardDAO.transferIncome(loggedInCard.getId(), toId, income);
     }
 
     public int getBalance() throws SQLException {
-        return cardDao.getBalance(loggedInCard.getId());
+        return cardDAO.getBalance(loggedInCard.getId());
     }
 
     public void logout() {
@@ -54,6 +61,31 @@ public class AppState {
     }
 
     public void addCard(BankCard card) throws SQLException {
-        cardDao.insertCard(card);
+        cardDAO.insertCard(card);
+    }
+
+    public boolean isLuhnValid(String cardNumber) {
+        try {
+            char[] chars = cardNumber.toCharArray();
+
+            int sum = 0;
+            for (int i = 1; i <= chars.length; i++) {
+                int num = Character.getNumericValue(chars[i - 1]);
+                if (i % 2 == 1) {
+                    num *= 2;
+                }
+                if (num > 9) {
+                    num -= 9;
+                }
+                sum += num;
+            }
+            return sum % 10 == 0;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
+
+    public int getCardId(String cardNumber) throws SQLException {
+        return cardDAO.getCardId(cardNumber);
     }
 }

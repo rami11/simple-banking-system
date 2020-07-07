@@ -60,7 +60,7 @@ public class MainMenuHandler {
                 }
                 break;
             default:
-                System.err.printf("%nPlease, choose an option in range 0-2%n%n");
+                System.out.printf("%nPlease, choose an option in range 0-2%n%n");
                 break;
         }
     }

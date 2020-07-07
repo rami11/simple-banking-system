@@ -30,6 +30,14 @@ public class LoginMenuHandler {
                 }
                 break;
 
+            case 3:
+                try {
+                    handleTransferProcess();
+                } catch (SQLException ex) {
+                    System.out.printf("%n%s%n%n", ex.getMessage());
+                }
+                break;
+
             case 5:
                 state.logout();
                 System.out.printf("%nYou have successfully logged out!%n%n");
@@ -41,8 +49,49 @@ public class LoginMenuHandler {
                 break;
 
             default:
-                System.err.printf("%nPlease, choose an option in range 0-2%n%n");
+                System.out.printf("%nPlease, choose an option in range 0-2%n%n");
                 break;
+        }
+    }
+
+    private void handleTransferProcess() throws SQLException {
+        System.out.printf("%nTransfer%n");
+        System.out.println("Enter card number:");
+        String cardNumber = state.readNext();
+
+        // handle exceptions
+        if (cardNumber.equals(state.getLoggedInCardNumber())) {
+            System.out.printf("%nYou can't transfer money to the same account!%n%n");
+            return;
+        }
+        if (!state.isLuhnValid(cardNumber)) {
+            System.out.printf("%nProbably you made mistake in the card number. Please try again!%n%n");
+            return;
+        }
+        int cardId = state.getCardId(cardNumber);
+        if (cardId == -1) {
+            System.out.printf("%nSuch a card does not exist.%n%n");
+            return;
+        }
+
+        // pass
+        transferIncome(cardId);
+    }
+
+    private void transferIncome(int toCardId) throws SQLException {
+        System.out.printf("%nEnter how much money you want to transfer:%n");
+        try {
+            int moneyToTransfer = Integer.parseInt(state.readNext());
+            int balance = state.getBalance();
+            if (balance < moneyToTransfer) {
+                System.out.printf("%nNot enough money!%n%n");
+                return;
+            }
+            state.transferIncome(toCardId, moneyToTransfer);
+            System.out.println("Success!\n");
+
+        } catch (NumberFormatException ex) {
+            System.out.printf("%nInvalid entry: %s%n%n", ex.getMessage());
         }
     }
 
@@ -52,8 +101,9 @@ public class LoginMenuHandler {
             int income = Integer.parseInt(state.readNext());
             state.addIncome(income);
             System.out.println("Income was added!\n");
+
         } catch (NumberFormatException ex) {
-            System.err.printf("%nInvalid entry: %s%n%n", ex.getMessage());
+            System.out.printf("%nInvalid entry: %s%n%n", ex.getMessage());
         }
     }
 

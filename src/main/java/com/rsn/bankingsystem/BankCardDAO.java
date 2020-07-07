@@ -13,6 +13,23 @@ public class BankCardDAO {
         this.connection = connection;
     }
 
+    public void transferIncome(int fromId, int toId, int income) throws SQLException {
+        String toQuery = " UPDATE card SET balance =  balance + ? WHERE id = ? ";
+        String fromQuery = " UPDATE card SET balance =  balance - ? WHERE id = ? ";
+        try (Connection conn = this.connection.connect();
+             PreparedStatement toStatement = conn.prepareStatement(toQuery);
+             PreparedStatement fromStatement = conn.prepareStatement(fromQuery)) {
+
+            fromStatement.setInt(1, income);
+            fromStatement.setInt(2, fromId);
+            fromStatement.executeUpdate();
+
+            toStatement.setInt(1, income);
+            toStatement.setInt(2, toId);
+            toStatement.executeUpdate();
+        }
+    }
+
     public void addIncome(int id, int income) throws SQLException {
         String query = " UPDATE card SET balance =  balance + ? WHERE id = ? ";
         try (Connection conn = this.connection.connect();
@@ -33,6 +50,19 @@ public class BankCardDAO {
                 return resultSet.getInt("balance");
             }
             throw new SQLException();
+        }
+    }
+
+    public int getCardId(String cardNumber) throws SQLException {
+        String query = " SELECT id FROM card WHERE number = ? LIMIT 1";
+        try (Connection conn = this.connection.connect();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, cardNumber);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+            return -1;
         }
     }
 
