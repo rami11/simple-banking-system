@@ -10,25 +10,20 @@ public class MainMenuHandler {
     }
 
     private void createAccount() throws SQLException {
-        System.out.println();
-
         BankCard bankCard = new BankCard();
-        String cardNumber = bankCard.getCardNumber();
-        String pin = bankCard.getPin();
-
         state.addCard(bankCard);
 
-        System.out.println("Your card number:");
+        String cardNumber = bankCard.getCardNumber();
+        String pin = bankCard.getPin();
+        System.out.println("\nYour card number:");
         System.out.println(cardNumber);
 
         System.out.println("Your card PIN:");
         System.out.printf("%s%n%n", pin);
     }
 
-    private void logIntoAccount() {
-        System.out.println();
-
-        System.out.println("Enter your card number:");
+    private void logIntoAccount() throws SQLException {
+        System.out.println("\nEnter your card number:");
         String cardNumber = state.readNext();
 
         System.out.println("Enter your PIN:");
@@ -55,11 +50,14 @@ public class MainMenuHandler {
                     createAccount();
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage() + '\n');
-                    ex.printStackTrace();
                 }
                 break;
             case 2:
-                logIntoAccount();
+                try {
+                    logIntoAccount();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage() + '\n');
+                }
                 break;
             default:
                 System.err.printf("%nPlease, choose an option in range 0-2%n%n");

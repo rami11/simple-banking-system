@@ -1,25 +1,21 @@
 package com.rsn.bankingsystem;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AppState {
     private final Scanner scanner;
-    private final Map<String, BankCard> cardMap;
     private final BankCardDAO cardDao;
     private BankCard loggedInCard;
 
     public AppState(DBConnection dbConnection) {
         this.cardDao = new BankCardDAO(dbConnection);
-        this.cardMap = new HashMap<>();
         this.scanner = new Scanner(System.in);
     }
 
-    public boolean tryLogin(String cardNumber, String pin) {
-        BankCard card = cardMap.get(cardNumber + "_" + pin);
+    public boolean tryLogin(String cardNumber, String pin) throws SQLException {
+        BankCard card = this.cardDao.getCard(cardNumber, pin);
         if (card != null) {
             loggedInCard = card;
             return true;

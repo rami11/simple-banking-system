@@ -4,17 +4,20 @@ import java.util.Objects;
 import java.util.Random;
 
 public class BankCard {
+    private final int id;
     private final String cardNumber;
     private final String pin;
     private double balance;
 
-    public BankCard(String cardNumber, String pin) {
+    public BankCard(int id, String cardNumber, String pin, int balance) {
+        this.id = id;
         this.cardNumber = cardNumber;
         this.pin = pin;
-        this.balance = 0;
+        this.balance = balance;
     }
 
     public BankCard() {
+        this.id = -1;
         this.cardNumber = generateCardNumber();
         this.pin = generatePIN();
         this.balance = 0;
@@ -59,6 +62,10 @@ public class BankCard {
             pinBuilder.append(random.nextInt(10));
         }
         return pinBuilder.toString();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCardNumber() {
