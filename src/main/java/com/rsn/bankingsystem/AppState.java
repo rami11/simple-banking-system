@@ -1,5 +1,6 @@
 package com.rsn.bankingsystem;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -8,9 +9,11 @@ import java.util.Scanner;
 public class AppState {
     private final Scanner scanner;
     private final Map<String, BankCard> cardMap;
+    private final BankCardDAO cardDao;
     private BankCard loggedInCard;
 
-    public AppState() {
+    public AppState(DBConnection dbConnection) {
+        this.cardDao = new BankCardDAO(dbConnection);
         this.cardMap = new HashMap<>();
         this.scanner = new Scanner(System.in);
     }
@@ -45,7 +48,7 @@ public class AppState {
         return this.scanner.next();
     }
 
-    public void addCard(BankCard card) {
-        cardMap.put(card.getCardNumber() + "_" + card.getPin(), card);
+    public void addCard(BankCard card) throws SQLException {
+        cardDao.insertCard(card);
     }
 }

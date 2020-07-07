@@ -1,5 +1,7 @@
 package com.rsn.bankingsystem;
 
+import java.sql.SQLException;
+
 public class MainMenuHandler {
     private final AppState state;
 
@@ -7,20 +9,20 @@ public class MainMenuHandler {
         this.state = state;
     }
 
-    private void createAccount() {
+    private void createAccount() throws SQLException {
         System.out.println();
 
         BankCard bankCard = new BankCard();
         String cardNumber = bankCard.getCardNumber();
         String pin = bankCard.getPin();
 
+        state.addCard(bankCard);
+
         System.out.println("Your card number:");
         System.out.println(cardNumber);
 
         System.out.println("Your card PIN:");
         System.out.printf("%s%n%n", pin);
-
-        state.addCard(bankCard);
     }
 
     private void logIntoAccount() {
@@ -49,7 +51,12 @@ public class MainMenuHandler {
                 System.exit(0);
                 break;
             case 1:
-                createAccount();
+                try {
+                    createAccount();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage() + '\n');
+                    ex.printStackTrace();
+                }
                 break;
             case 2:
                 logIntoAccount();
