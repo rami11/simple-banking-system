@@ -10,4 +10,4 @@ You can set these attributes in intelliJ
 Main class:       _com.rsn.bankingsystem.Main_
 Program argument: _-fileName <db_name.db>_
 
-or run the command _java com.rsn.bankingsystem.Main -fileName <db_name.db>_
+or run the command ```_java com.rsn.bankingsystem.Main -fileName <db_name.db>_```
