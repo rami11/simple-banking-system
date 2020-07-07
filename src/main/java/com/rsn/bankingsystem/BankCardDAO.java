@@ -92,4 +92,13 @@ public class BankCardDAO {
             statement.executeUpdate();
         }
     }
+
+    public void deleteCard(int id) throws SQLException {
+        String query = " DELETE FROM card WHERE id = ? ";
+        try (Connection conn = this.connection.connect();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.execute();
+        }
+    }
 }

@@ -88,4 +88,8 @@ public class AppState {
     public int getCardId(String cardNumber) throws SQLException {
         return cardDAO.getCardId(cardNumber);
     }
+
+    public void closeAccount() throws SQLException {
+        cardDAO.deleteCard(loggedInCard.getId());
+    }
 }

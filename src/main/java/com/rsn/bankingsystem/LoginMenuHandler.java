@@ -38,6 +38,14 @@ public class LoginMenuHandler {
                 }
                 break;
 
+            case 4:
+                try {
+                    handleCloseAccount();
+                } catch (SQLException ex) {
+                    System.out.printf("%n%s%n%n", ex.getMessage());
+                }
+                break;
+
             case 5:
                 state.logout();
                 System.out.printf("%nYou have successfully logged out!%n%n");
@@ -52,6 +60,12 @@ public class LoginMenuHandler {
                 System.out.printf("%nPlease, choose an option in range 0-2%n%n");
                 break;
         }
+    }
+
+    private void handleCloseAccount() throws SQLException {
+        state.closeAccount();
+        state.logout();
+        System.out.printf("%nThe account has been closed!%n%n");
     }
 
     private void handleTransferProcess() throws SQLException {
