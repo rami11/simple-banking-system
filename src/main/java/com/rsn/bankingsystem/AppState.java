@@ -23,6 +23,15 @@ public class AppState {
         return false;
     }
 
+    public void addIncome(int income) throws SQLException {
+        int id = loggedInCard.getId();
+        this.cardDao.addIncome(id, income);
+    }
+
+    public int getBalance() throws SQLException {
+        return cardDao.getBalance(loggedInCard.getId());
+    }
+
     public void logout() {
         loggedInCard = null;
     }

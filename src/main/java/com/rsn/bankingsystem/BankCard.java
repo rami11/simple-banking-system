@@ -7,7 +7,7 @@ public class BankCard {
     private final int id;
     private final String cardNumber;
     private final String pin;
-    private double balance;
+    private int balance;
 
     public BankCard(int id, String cardNumber, String pin, int balance) {
         this.id = id;
@@ -74,14 +74,6 @@ public class BankCard {
 
     public String getPin() {
         return pin;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     @Override
